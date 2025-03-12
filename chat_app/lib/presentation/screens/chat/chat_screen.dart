@@ -1,7 +1,10 @@
-import 'package:chat_app/config/presentation/widgets/chat/message_field_box.dart';
-import 'package:chat_app/config/presentation/widgets/chat/my_message_bubble.dart';
-import 'package:chat_app/config/presentation/widgets/chat/other_message_bubble.dart';
+import 'package:chat_app/domain/entities/message.dart';
+import 'package:chat_app/presentation/providers/chat_provider.dart';
+import 'package:chat_app/presentation/widgets/chat/message_field_box.dart';
+import 'package:chat_app/presentation/widgets/chat/my_message_bubble.dart';
+import 'package:chat_app/presentation/widgets/chat/other_message_bubble.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -28,6 +31,7 @@ class ChatScreen extends StatelessWidget {
 class _ChatView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final chatProvider = context.watch<ChatProvider>();
     //SafeArea is for dont allow content in the buttom area
     return SafeArea(
       child: Column(
@@ -35,15 +39,18 @@ class _ChatView extends StatelessWidget {
           //Expanded is for expand the widget to the all available screen space
           Expanded(
             child: ListView.builder(
-              itemCount: 5,
+              itemCount: chatProvider.messages.length,
               itemBuilder: (context, index) {
-                return (index % 2 == 0)
+                final message = chatProvider.messages[index];
+                return (message.fromMessage == FromWho.other)
                     ? const OtherMessageBubble()
-                    : const MyMessageBubble();
+                    : MyMessageBubble(
+                      message: Message(text: message.text, fromMessage: FromWho.me),
+                    );
               },
             ),
           ),
-          MessageFieldBox()
+          MessageFieldBox(),
         ],
       ),
     );
