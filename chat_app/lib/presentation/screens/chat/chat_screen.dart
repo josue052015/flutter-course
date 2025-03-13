@@ -17,7 +17,8 @@ class ChatScreen extends StatelessWidget {
           padding: const EdgeInsets.all(4.0),
           child: CircleAvatar(
             backgroundImage: NetworkImage(
-              'https://marvel-b1-cdn.bc0a.com/f00000000163918/www.care.org/wp-content/uploads/2021/04/alexandra-daddario-bio.webp',
+              'https://www.care.org/wp-content/uploads/2021/04/alexandra-daddario-bio.webp',
+             
             ),
           ),
         ),
@@ -39,13 +40,17 @@ class _ChatView extends StatelessWidget {
           //Expanded is for expand the widget to the all available screen space
           Expanded(
             child: ListView.builder(
+              controller: chatProvider.chatScrollController,
               itemCount: chatProvider.messages.length,
               itemBuilder: (context, index) {
                 final message = chatProvider.messages[index];
                 return (message.fromMessage == FromWho.other)
                     ? const OtherMessageBubble()
                     : MyMessageBubble(
-                      message: Message(text: message.text, fromMessage: FromWho.me),
+                      message: Message(
+                        text: message.text,
+                        fromMessage: FromWho.me,
+                      ),
                     );
               },
             ),
