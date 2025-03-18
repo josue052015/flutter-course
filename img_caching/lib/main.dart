@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:img_caching/screens/img_screen.dart';
+//import 'package:img_caching/screens/img_screen.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -15,11 +17,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-      
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home:  ImgScreen(),
+      home: Scaffold(
+        appBar: AppBar(title: Center(child: Text('Image caching'))),
+        body:
+        ImgScreen()
+      ),
     );
   }
 }
-
