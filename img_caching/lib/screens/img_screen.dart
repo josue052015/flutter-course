@@ -66,7 +66,7 @@ class _ImgScreenState extends State<ImgScreen> {
       imgIdentifier = await prefs.getString('ETag');
       final file = await fetchLocalFile();
 
-      getImg(imgIdentifier)
+      getImg('',imgIdentifier)
           .then((response) async {
             imgIdentifier = response.headers.value('ETag');
             if (response.statusCode == 200 && imgIdentifier != null) {
