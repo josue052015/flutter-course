@@ -21,16 +21,489 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: Scaffold(
-        appBar: AppBar(title: Center(child: Text('Image caching'))),
-        body: ClipOval(
-          child: CachedNetworkImage(
-            imageUrl:
-                "https://tripleenableapi.triplecyber.com/api/v1/Profile/UserPhoto/velvetlullaby2044@tripleenableanonymous.com?height=300&width=300",
-            cacheManager: MyCustomCacheManager(),
-            width: 60,
-            height: 60,
-            fit: BoxFit.cover, // Para que la imagen cubra el círculo
+        appBar: AppBar(
+          // title: Center(child: Text('Image caching')),
+          backgroundColor: Color(0xFF213E4C),
+          leading: IconButton(
+            icon: Icon(Icons.close),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF223a44),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ), // Ícono con cuadritos
+            onPressed: () {
+              // Acción al presionar el ícono de cuadritos
+            },
           ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.grid_view),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF223a44),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ), // Ícono con cuadritos
+              onPressed: () {
+                // Acción al presionar el ícono de cuadritos
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.upload),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF223a44),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ), // Ícono con cuadritos
+              onPressed: () {
+                // Acción al presionar el ícono de cuadritos
+              },
+            ),
+          ],
+        ),
+        body: 
+        Stack(
+          children: [
+            Container(
+              color: Color(0xFF213E4C),
+              child: SingleChildScrollView(
+                child: Container(
+                  margin: EdgeInsets.only(top: 35),
+                  padding: const EdgeInsets.only(left: 16, right: 16),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF1a202e),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      // Sección superior (por ejemplo, el nombre/ID + emojis)
+                      Row(
+                        children: [
+                          Transform.translate(
+                            offset: Offset(0, -30),
+                            child: ClipOval(
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    "https://tripleenableapi.triplecyber.com/api/v1/Profile/UserPhoto/velvetlullaby2044@tripleenableanonymous.com?height=300&width=300",
+                                cacheManager: MyCustomCacheManager(),
+                                width: 80,
+                                height: 80,
+                                fit:
+                                    BoxFit
+                                        .cover, // Para que la imagen cubra el círculo
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 16),
+                          // Texto (ejemplo de dirección o nombre de usuario)
+                          Expanded(
+                            child: Text(
+                              'shdDTMAL4ghcsLQUB4Vp',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          // Podrías poner algunos emojis o íconos a la derecha
+                          // Ejemplo: Icon(Icons.emoji_emotions)
+                        ],
+                      ),
+
+                      // Línea divisoria (opcional)
+                      const Divider(height: 20, color: Colors.transparent),
+
+                      // Opciones en forma de ListTiles
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xFF222737),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: ListTile(
+                          iconColor: Colors.white,
+                          textColor: Colors.white,
+                          leading: const Icon(Icons.lock),
+                          title: const Text('Backup recovery phrase'),
+                          // Podemos simular un badge de notificación en trailing:
+                          trailing: Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              const Icon(Icons.arrow_forward_ios, size: 16),
+                              // Indicador rojo (badge)
+                              Positioned(
+                                right: 14,
+                                top: -4,
+                                child: Container(
+                                  width: 8,
+                                  height: 8,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.red,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          onTap: () {
+                            // Acción al pulsar
+                          },
+                        ),
+                      ),
+                      const Divider(height: 20, color: Colors.transparent),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xFF222737),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Column(
+                          children: [
+                            // Primer ListTile: "Edit Profile"
+                            ListTile(
+                              iconColor: Colors.white,
+                              textColor: Colors.white,
+                              leading: Icon(Icons.edit), // Ícono de edición
+                              title: Text('Edit Profile'),
+                              trailing: Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                              onTap: () {
+                                // Acción al pulsar en "Edit Profile"
+                              },
+                            ),
+                            // Separador entre los dos ListTiles
+                            Divider(
+                              color: Colors.white12,
+                              thickness: 1,
+                              height: 1,
+                            ),
+                            // Segundo ListTile: "Password"
+                            ListTile(
+                              iconColor: Colors.white,
+                              textColor: Colors.white,
+                              leading: Icon(Icons.lock), // Ícono de candado
+                              title: Text('Password'),
+                              trailing: Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                              onTap: () {
+                                // Acción al pulsar en "Password"
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Divider(height: 20, color: Colors.transparent),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xFF222737),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Column(
+                          children: [
+                            // ListTile: "Messages"
+                            ListTile(
+                              iconColor: Colors.white,
+                              textColor: Colors.white,
+                              leading: Icon(
+                                Icons.message,
+                              ), // Icono para "Messages"
+                              title: Text('Messages'),
+                              trailing: Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                              onTap: () {
+                                // Acción al pulsar "Messages"
+                              },
+                            ),
+                            Divider(
+                              color: Colors.white12,
+                              thickness: 1,
+                              height: 1,
+                            ),
+                            // ListTile: "Wallet"
+                            ListTile(
+                              iconColor: Colors.white,
+                              textColor: Colors.white,
+                              leading: Icon(
+                                Icons.account_balance_wallet,
+                              ), // Icono de cartera
+                              title: Text('Wallet'),
+                              trailing: Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                              onTap: () {
+                                // Acción al pulsar "Wallet"
+                              },
+                            ),
+                            Divider(
+                              color: Colors.white12,
+                              thickness: 1,
+                              height: 1,
+                            ),
+                            // ListTile: "Keycard"
+                            ListTile(
+                              iconColor: Colors.white,
+                              textColor: Colors.white,
+                              leading: Icon(
+                                Icons.credit_card,
+                              ), // Icono de tarjeta
+                              title: Text('Keycard'),
+                              trailing: Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                              onTap: () {
+                                // Acción al pulsar "Keycard"
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const Divider(height: 20, color: Colors.transparent),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xFF222737), // Fondo oscuro
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Column(
+                          children: [
+                            // 1. Privacy and security
+                            ListTile(
+                              iconColor: Colors.white,
+                              textColor: Colors.white,
+                              leading: Icon(Icons.lock_outline),
+                              title: Text('Privacy and security'),
+                              trailing: Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                              onTap: () {
+                                // Acción al pulsar
+                              },
+                            ),
+                            Divider(
+                              color: Colors.white12,
+                              thickness: 1,
+                              height: 1,
+                            ),
+                            // 2. Syncing
+                            ListTile(
+                              iconColor: Colors.white,
+                              textColor: Colors.white,
+                              leading: Icon(Icons.sync),
+                              title: Text('Syncing'),
+                              trailing: Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                              onTap: () {
+                                // Acción al pulsar
+                              },
+                            ),
+                            Divider(
+                              color: Colors.white12,
+                              thickness: 1,
+                              height: 1,
+                            ),
+                            // 3. Notifications
+                            ListTile(
+                              iconColor: Colors.white,
+                              textColor: Colors.white,
+                              leading: Icon(Icons.notifications_outlined),
+                              title: Text('Notifications'),
+                              trailing: Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                              onTap: () {
+                                // Acción al pulsar
+                              },
+                            ),
+                            Divider(
+                              color: Colors.white12,
+                              thickness: 1,
+                              height: 1,
+                            ),
+                            // 4. Appearance
+                            ListTile(
+                              iconColor: Colors.white,
+                              textColor: Colors.white,
+                              leading: Icon(Icons.format_paint),
+                              title: Text('Appearance'),
+                              trailing: Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                              onTap: () {
+                                // Acción al pulsar
+                              },
+                            ),
+                            Divider(
+                              color: Colors.white12,
+                              thickness: 1,
+                              height: 1,
+                            ),
+                            // 5. Language and currency
+                            ListTile(
+                              iconColor: Colors.white,
+                              textColor: Colors.white,
+                              leading: Icon(Icons.language),
+                              title: Text('Language and currency'),
+                              trailing: Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                              onTap: () {
+                                // Acción al pulsar
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const Divider(height: 20, color: Colors.transparent),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xFF222737), // Fondo oscuro
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: ListTile(
+                          iconColor: Colors.white,
+                          textColor: Colors.white,
+                          leading: Icon(
+                            Icons.settings_outlined,
+                          ), // Ícono de engrane
+                          title: Text('Advanced'),
+                          trailing: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 16,
+                            color: Colors.white,
+                          ),
+                          onTap: () {
+                            // Acción al pulsar "Advanced"
+                          },
+                        ),
+                      ),
+
+                      const Divider(height: 20, color: Colors.transparent),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xFF222737),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              iconColor: Colors.white,
+                              textColor: Colors.white,
+                              leading: Icon(Icons.explore),
+                              title: Text('Explore'),
+                              trailing: Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                              onTap: () {
+                                // Acción para Explore
+                              },
+                            ),
+                            Divider(
+                              color: Colors.white12,
+                              thickness: 1,
+                              height: 1,
+                            ),
+                            ListTile(
+                              iconColor: Colors.white,
+                              textColor: Colors.white,
+                              leading: Icon(Icons.settings),
+                              title: Text('Settings'),
+                              trailing: Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                              onTap: () {
+                                // Acción para Settings
+                              },
+                            ),
+                            Divider(
+                              color: Colors.white12,
+                              thickness: 1,
+                              height: 1,
+                            ),
+                            ListTile(
+                              iconColor: Colors.white,
+                              textColor: Colors.white,
+                              leading: Icon(Icons.notifications),
+                              title: Text('Notifications'),
+                              trailing: Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                              onTap: () {
+                                // Acción para Notifications
+                              },
+                            ),
+                            Divider(
+                              color: Colors.white12,
+                              thickness: 1,
+                              height: 1,
+                            ),
+                            ListTile(
+                              iconColor: Colors.white,
+                              textColor: Colors.white,
+                              leading: Icon(Icons.person),
+                              title: Text('Profile'),
+                              trailing: Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                              onTap: () {
+                                // Acción para Profile
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const Divider(height: 20, color: Colors.transparent),
+                    ],
+                  ),
+                  // child: SingleChildScrollView(
+
+                  // ),
+                ),
+              ),
+            ),
+            
+          ],
         ),
       ),
     );
