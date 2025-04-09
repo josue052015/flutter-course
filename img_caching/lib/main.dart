@@ -50,7 +50,11 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         // Mapea el offset del scroll entre 0 y 200 (puedes ajustarlo)
         double scrollOffset = _scrollController.offset.clamp(0, 100);
         double value = 1 - (scrollOffset / 100); // 1.0 → 0.0
-        _animationController.value = value;
+        if (value < 0.5) {
+          _animationController.value = 0.0;
+        } else {
+          _animationController.value = value;
+        }
       }
     });
   }
@@ -73,6 +77,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
       home: Scaffold(
         appBar: AppBar(
           // title: Center(child: Text('Image caching')),
+          scrolledUnderElevation: 0,
           backgroundColor: Color(0xFF213E4C),
           leading: IconButton(
             icon: Icon(Icons.close),
@@ -87,7 +92,10 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
               // Acción al presionar el ícono de cuadritos
             },
           ),
-          title: _isTitleVisible ? Text('') : Text('klk', style: TextStyle(color: Colors.white, ),),
+          title:
+              _isTitleVisible
+                  ? Text('')
+                  : Text('klk', style: TextStyle(color: Colors.white)),
           actions: [
             IconButton(
               icon: Icon(Icons.grid_view),
@@ -122,7 +130,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
           child: SingleChildScrollView(
             controller: _scrollController,
             child: Container(
-              margin: EdgeInsets.only(top: 35),
+              margin: EdgeInsets.only(top: 45),
               padding: const EdgeInsets.only(left: 16, right: 16),
               decoration: BoxDecoration(
                 color: Color(0xFF1a202e),
@@ -139,10 +147,56 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
                       const Divider(height: 20, color: Colors.transparent),
                       // Sección superior (por ejemplo, el nombre/ID + emojis)
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          SizedBox(width: 100),
-                          // Texto (ejemplo de dirección o nombre de usuario)
-                          Expanded(
+                        //  SizedBox(width: 100),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Color(
+                                0xFF1C1C2D,
+                              ), // Fondo oscuro similar al de la imagen
+                              borderRadius: BorderRadius.circular(24),
+                              border: Border.all(
+                                color: Colors.grey.shade700,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              
+                              children: [
+                                // Circulito verde (simulando el toggle)
+                                Container(
+                                  width: 12,
+                                  height: 12,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color:
+                                        Colors
+                                            .tealAccent[700], // Verde brillante
+                                  ),
+                                ),
+                                SizedBox(width: 8),
+                                Text(
+                                  "Automatic",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                SizedBox(width: 4),
+                                Icon(
+                                  Icons.keyboard_arrow_down_rounded,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
+                              ],
+                            ),
+                          ),
+                          /*  Expanded(
                             child: VisibilityDetector(
                               key: Key('a1123'),
                               onVisibilityChanged: (VisibilityInfo info) {
@@ -160,14 +214,32 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                          ),
+                          ), */
                           // Podrías poner algunos emojis o íconos a la derecha
                           // Ejemplo: Icon(Icons.emoji_emotions)
                         ],
                       ),
 
                       // Línea divisoria (opcional)
-                      const Divider(height: 30, color: Colors.transparent),
+                      const Divider(height: 16, color: Colors.transparent),
+                      VisibilityDetector(
+                        key: Key('a1123'),
+                        onVisibilityChanged: (VisibilityInfo info) {
+                          setState(() {
+                            _isTitleVisible = info.visibleFraction > 0;
+                          });
+                        },
+                        child: Text(
+                          'shdDTMAL4ghcsLQUB4Vp',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const Divider(height: 25, color: Colors.transparent),
 
                       // Opciones en forma de ListTiles
                       Container(
@@ -547,6 +619,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
                     top: -20,
                     child: ScaleTransition(
                       scale: _scaleAnimation,
+                      alignment: Alignment.bottomLeft,
                       child: ClipOval(
                         child: CachedNetworkImage(
                           imageUrl:
