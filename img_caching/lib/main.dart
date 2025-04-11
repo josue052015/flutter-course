@@ -20,7 +20,8 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   // This widget is the root of your application.
   late ScrollController _scrollController;
   late AnimationController _animationController;
-  late Animation<double> _scaleAnimation;
+  late Animation<double> _userImgAnimation;
+  late Animation<double> _titleAnimation;
   bool _initialAnimationDone = false;
   bool _isTitleVisible = true;
 
@@ -33,10 +34,12 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
       duration: Duration(milliseconds: 0), // usaremos el value directamente
     );
 
-    _scaleAnimation = Tween<double>(begin: 0.5, end: 1).animate(
+    _userImgAnimation = Tween<double>(begin: 0.5, end: 1).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
-
+    _titleAnimation = Tween<double>(begin: 0.5, end: 1).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutBack),
+    );
     // Ejecutar animación inicial
     _animationController.forward().whenComplete(() {
       // Después de la animación inicial, conectamos con el scroll
@@ -48,12 +51,21 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     _scrollController.addListener(() {
       if (_initialAnimationDone) {
         // Mapea el offset del scroll entre 0 y 200 (puedes ajustarlo)
-        double scrollOffset = _scrollController.offset.clamp(0, 100);
+        double scrollOffset = _scrollController.offset.clamp(0, 250);
         double value = 1 - (scrollOffset / 100); // 1.0 → 0.0
-        if (value < 0.5) {
-          _animationController.value = 0.0;
+        if (_isTitleVisible) {
+          if (value < 0.6) {
+            _animationController.value = 0.0;
+          } else {
+            _animationController.value = value;
+          }
         } else {
-          _animationController.value = value;
+           if (value > -0.6) {
+            _animationController.value = 0.0;
+          } else {
+            _animationController.value = value * -1;
+          }
+          print("scroll value $value");
         }
       }
     });
@@ -95,7 +107,10 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
           title:
               _isTitleVisible
                   ? Text('')
-                  : Text('klk', style: TextStyle(color: Colors.white)),
+                  : ScaleTransition(
+                    scale: _titleAnimation,
+                    child: Text('klk', style: TextStyle(color: Colors.white)),
+                  ),
           actions: [
             IconButton(
               icon: Icon(Icons.grid_view),
@@ -149,7 +164,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                        //  SizedBox(width: 100),
+                          //  SizedBox(width: 100),
                           Container(
                             padding: EdgeInsets.symmetric(
                               horizontal: 12,
@@ -160,13 +175,11 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
                                 0xFF1C1C2D,
                               ), // Fondo oscuro similar al de la imagen
                               borderRadius: BorderRadius.circular(24),
-                              border: Border.all(
-                                color: Colors.grey.shade700,
-                              ),
+                              border: Border.all(color: Colors.grey.shade700),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
-                              
+
                               children: [
                                 // Circulito verde (simulando el toggle)
                                 Container(
@@ -618,7 +631,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
                     left: 5,
                     top: -20,
                     child: ScaleTransition(
-                      scale: _scaleAnimation,
+                      scale: _userImgAnimation,
                       alignment: Alignment.bottomLeft,
                       child: ClipOval(
                         child: CachedNetworkImage(
