@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:img_caching/screens/custom_cache_manager.dart';
 import 'package:img_caching/screens/img_screen.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -21,9 +22,10 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   late ScrollController _scrollController;
   late AnimationController _animationController;
   late Animation<double> _userImgAnimation;
-  late Animation<double> _titleAnimation;
   bool _initialAnimationDone = false;
   bool _isTitleVisible = true;
+  double _translateTitleY = 10;
+  String _title = "shdDTMAL4ghcsLQUB4Vp";
 
   void initState() {
     super.initState();
@@ -37,9 +39,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     _userImgAnimation = Tween<double>(begin: 0.5, end: 1).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
-    _titleAnimation = Tween<double>(begin: 0.5, end: 1).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeOutBack),
-    );
+
     // Ejecutar animación inicial
     _animationController.forward().whenComplete(() {
       // Después de la animación inicial, conectamos con el scroll
@@ -47,6 +47,29 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         _initialAnimationDone = true;
       });
     });
+
+    void translateTitle() {
+      double titleScrollClamp = _scrollController.offset.clamp(0, 160) / 160;
+
+      if (_scrollController.position.userScrollDirection ==
+              ScrollDirection.reverse &&
+          _translateTitleY > 0) {
+        // Scroll hacia abajo
+        setState(() {
+          _translateTitleY -= 1;
+        });
+      } else if (_scrollController.position.userScrollDirection ==
+              ScrollDirection.forward &&
+          titleScrollClamp < 0.95) {
+        // Scroll hacia arriba
+        setState(() {
+          _translateTitleY += 1;
+        });
+
+      }
+
+      print("titleScrollClamp $titleScrollClamp");
+    }
 
     _scrollController.addListener(() {
       if (_initialAnimationDone) {
@@ -60,12 +83,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
             _animationController.value = value;
           }
         } else {
-           if (value > -0.6) {
-            _animationController.value = 0.0;
-          } else {
-            _animationController.value = value * -1;
-          }
-          print("scroll value $value");
+          translateTitle();
         }
       }
     });
@@ -107,9 +125,16 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
           title:
               _isTitleVisible
                   ? Text('')
-                  : ScaleTransition(
-                    scale: _titleAnimation,
-                    child: Text('klk', style: TextStyle(color: Colors.white)),
+                  : Transform.translate(
+                    offset: Offset(0, _translateTitleY),
+                    child: Text(
+                      _title,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
           actions: [
             IconButton(
@@ -209,27 +234,6 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
                               ],
                             ),
                           ),
-                          /*  Expanded(
-                            child: VisibilityDetector(
-                              key: Key('a1123'),
-                              onVisibilityChanged: (VisibilityInfo info) {
-                                setState(() {
-                                  _isTitleVisible = info.visibleFraction > 0;
-                                });
-                              },
-                              child: Text(
-                                'shdDTMAL4ghcsLQUB4Vp',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ), */
-                          // Podrías poner algunos emojis o íconos a la derecha
-                          // Ejemplo: Icon(Icons.emoji_emotions)
                         ],
                       ),
 
@@ -243,7 +247,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
                           });
                         },
                         child: Text(
-                          'shdDTMAL4ghcsLQUB4Vp',
+                          _title,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
